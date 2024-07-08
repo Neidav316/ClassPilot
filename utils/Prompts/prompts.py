@@ -44,5 +44,11 @@ prompt_questioner = \
     }
     ]
 }
+
 and will read the following string:
+"""
+
+prompt_chatbot = \
+"""
+
 """
