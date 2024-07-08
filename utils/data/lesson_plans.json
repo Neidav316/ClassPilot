@@ -1,0 +1,111 @@
+{
+  "subjects": [
+    {
+      "subject": "Python",
+      "lessons": [
+        {
+          "title": "Introduction to Python",
+          "pages": [
+            {
+              "title": "What is Python?",
+              "subtitles": [
+                "History of Python",
+                "Key Features"
+              ],
+              "content": "Python is a high-level, interpreted programming language that is widely used for various purposes such as web development, scientific computing, data analysis, artificial intelligence, and more. It was created in the late 1980s by Guido van Rossum. Python is known for its simplicity, readability, and ease of use, making it an ideal language for beginners and experienced programmers alike."
+            },
+            {
+              "title": "Setting up Python",
+              "subtitles": [
+                "Downloading Python",
+                "Installing Python",
+                "Setting up the Environment"
+              ],
+              "content": "To get started with Python, you need to download and install it from the official Python website. Once installed, you need to set up your environment by choosing a text editor or an Integrated Development Environment (IDE) such as PyCharm, Visual Studio Code, or Spyder. You can also set up your command prompt or terminal to run Python scripts."
+            }
+          ]
+        },
+        {
+          "title": "Basic Syntax",
+          "pages": [
+            {
+              "title": "Variables and Data Types",
+              "subtitles": [
+                "Assigning Variables",
+                "Basic Data Types"
+              ],
+              "content": "In Python, you can assign a value to a variable using the assignment operator (=). Python has several built-in data types such as integers, floats, strings, booleans, lists, tuples, and dictionaries. You can use the type() function to check the data type of a variable."
+            },
+            {
+              "title": "Operators and Control Structures",
+              "subtitles": [
+                "Arithmetic Operators",
+                "Comparison Operators",
+                "Logical Operators",
+                "If-Else Statements",
+                "Loops"
+              ],
+              "content": "Python supports various operators for performing arithmetic, comparison, and logical operations. You can use if-else statements to make decisions and control the flow of your program. Python also supports for loops and while loops for iterating over sequences."
+            }
+          ]
+        },
+        {
+          "title": "Functions and Modules",
+          "pages": [
+            {
+              "title": "Defining Functions",
+              "subtitles": [
+                "Function Syntax",
+                "Function Arguments",
+                "Return Statement"
+              ],
+              "content": "In Python, you can define a function using the def keyword. A function can take arguments and return values. You can use functions to organize your code and make it reusable."
+            },
+            {
+              "title": "Importing Modules",
+              "subtitles": [
+                "Built-in Modules",
+                "External Modules",
+                "Creating Your Own Modules"
+              ],
+              "content": "Python has a vast collection of built-in modules that provide various functionalities. You can import modules using the import statement. You can also install external modules using pip and create your own modules to organize your code."
+            }
+          ]
+        }
+      ]
+    },
+    { "subject": "Addition",
+      "lessons": [
+        { "title": "Introduction to Addition",
+          "pages": [
+            { "title": "What is Addition?",
+              "subtitles": ["Definition", "Real-life examples"],
+              "content": "Addition is a mathematical operation that represents the combination of two or more numbers to get a total or a sum. For example, 2 + 3 means combining 2 and 3 to get 5. We use addition in our daily lives, such as counting money, measuring ingredients, or calculating the total cost of items." },
+            { "title": "Addition Notation",
+              "subtitles": ["Symbol", "Order of operations"],
+              "content": "The addition symbol is denoted by a plus sign (+). When performing addition, follow the order of operations (PEMDAS): parentheses, exponents, multiplication and division, and addition and subtraction. For example, 2 + 3 × 4 = ? First, multiply 3 and 4, then add 2, resulting in 14." }
+          ]
+        },
+        { "title": "Adding Single-Digit Numbers",
+          "pages": [
+            { "title": "Basic Addition Facts",
+              "page_subtitles": ["Counting on", "Making ten"],
+              "page_content": "Memorizing basic addition facts is essential for fluency. Some key facts to remember include counting on from a number, such as 5 + 2 = ?, and making ten, such as 8 + 2 = ?. These concepts can be visualized using number lines or counting blocks." },
+            { "title": "Adding with Numbers up to 10",
+              "page_subtitles": ["Finger counting", "Number bonds"],
+              "page_content": "Adding numbers up to 10 can be visualized using finger counting or number bonds. For example, 5 + 4 = ? can be counted on from 5, or represented as a number bond of 5 + 4 = 9." }
+          ]
+        },
+        { "lesson_title": "Adding Multi-Digit Numbers",
+          "pages": [
+            { "page_title": "The Addition Algorithm",
+              "page_subtitles": ["Step-by-step process", "Place value"],
+              "page_content": "The addition algorithm involves adding each place value (hundreds, tens, ones) separately, starting from the right. Be mindful of regrouping tens, hundreds, and thousands. For example, 45 + 27 = ? Add 45 and 27, starting from the ones place, then regrouping tens and hundreds." },
+            { "page_title": "Real-World Applications",
+              "page_subtitles": ["Measuring", "Money", "Data"],
+              "page_content": "Adding multi-digit numbers is crucial in various real-world applications, such as measuring the total length of two objects, calculating the total cost of items, or analyzing data. For instance, if a bookshelf has 15 books on one shelf and 20 books on another, the total number of books is 15 + 20 = 35." }
+          ] }
+      ]
+    }
+  ]
+}
