@@ -5,12 +5,21 @@ import streamlit as st
 import pandas as pd
 
 
-def get_subjects(filter=None):
-    f = open("utils/data/lesson_plans.json")
-    return json.load(f)
+def get_finished_subjects(filter=None):
+    f_data = open("utils/data/lesson_plans.json")
+    f_config = open("utils/data/lesson_config.json")
+    data = json.load(f_data)
+    config = json.load(f_config)
+    ready_subjects = {"subjects":[]}
+    for subject in data["subjects"]:
+        for config_subject in config["subjects"]:
+            if subject["subject"] == config_subject["subject"]:
+                ready_subjects["subjects"].append(subject)
+                break
+    return ready_subjects
 
 
-data = get_subjects()
+data = get_finished_subjects()
 
 df = pd.DataFrame({
     "Main Subject": [subject_content["subject"] for subject_content in data["subjects"]],

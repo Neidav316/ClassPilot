@@ -23,11 +23,28 @@ else:
 if "model_questioner" not in st.session_state:
     st.session_state["model_questioner"] = "llama3-70b-8192"
 
-# Get system prompt for model to generate questions
-system_prompt = {"role": "system", "content": prompts.prompt_questioner}
-
-# Get lesson plan content for generating questions
 # Need to extract data from database
+# Get system prompt for model to generate questions
+# Get lesson plan content for generating questions
+initial_prompt = prompts.prompt_questioner
+if "subject_content" in st.session_state:
+    with open("utils/data/lesson_plans.json") as f:
+        content = json.load(f)
+        for subject in content["subjects"]:
+            if subject["subject"] == st.session_state.subject_content:
+                prompt = initial_prompt + json.dumps(subject)
+                system_prompt = {"role": "system", "content": prompt}
+
+
+    with st.chat_message("assistant"):
+        response = client_questioner.chat.completions.create(
+            model=st.session_state["model_questioner"],
+            messages=[system_prompt, {"role": "user", "content": "give me a question"}],
+            max_tokens=2048,
+            stream=False
+        ).choices[0].message.content
+        st.write(response)
+
 
 
 

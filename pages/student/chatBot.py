@@ -1,43 +1,55 @@
 import streamlit as st
-from langchain_community.chat_models import ChatOllama
-import ollama
+import json
+
+from pages.student.chatbot.ChatBot import ChatBot
+
+
+# def main():
+# Initialize role in session state and default value for role
+if "role" not in st.session_state:
+    st.session_state.role = "Student"  # default role is Student
 
 st.header("Chatbot")
 st.write(f"You are logged in as {st.session_state.role}.")
 
-client_ollama = ollama.Client()
+# Load lesson text if not already loaded
+if "text_lesson" not in st.session_state:
+    with open("utils/data/lesson_plans.json", "r", encoding='utf-8') as file:
+        content = json.load(file)["subjects"][0]
+        text = json.dumps(content)
+        st.session_state.text_lesson = text
 
-if "model_chat" not in st.session_state:
-    st.session_state["model_chat"] = "llama3"
+# Initialize chatbot if not already initialized
+if "chatbot" not in st.session_state:
+    model = "example_bot"
+    st.session_state.chatbot = ChatBot(model, st.session_state.text_lesson)
 
+# Display chat messages from session state
 if "messages_chat" not in st.session_state:
     st.session_state.messages_chat = []
+
 for message in st.session_state.messages_chat:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
+# Get user input
 prompt = st.chat_input("Say something")
 if prompt:
     st.session_state.messages_chat.append({"role": "user", "content": prompt})
+
     # Display user message in chat message container
     with st.chat_message("user"):
         st.markdown(prompt)
+
+    # Get response from chatbot
     with st.chat_message("assistant"):
-        stream = client_ollama.chat.completions.create(
-            model=st.session_state["model_chat"],
-            messages=[
-                {"role": m["role"], "content": m["content"]}
-                for m in st.session_state.messages_chat
-            ],
-            stream=True,
-        )
-        response = st.write_stream(stream)
+        stream = st.session_state.chatbot.send_message(prompt)
+        response = st.session_state.chatbot.respond()
+        st.markdown(response)
+
+    # Append assistant's response to messages_chat
     st.session_state.messages_chat.append({"role": "assistant", "content": response})
 
-
-def main():
-    pass
-
-
 if __name__ == "__main__":
-    main()
+    # main()
+    pass

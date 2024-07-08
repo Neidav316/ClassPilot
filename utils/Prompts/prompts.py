@@ -31,5 +31,18 @@ Ensure that the JSON is properly formatted and accurately reflects the provided 
 
 prompt_questioner = \
 """
- 
+ You generate questions with 4 answers, one is correct and the others are wrong, the questions are according to the content of the subject
+ in a json format:
+ { "subject": "",
+   "lessons": [
+   { "title": "",
+     "pages": [
+     { "title" : "",
+       "subtitles": ["",""],
+       "content": "" },
+       ]
+    }
+    ]
+}
+and will read the following string:
 """

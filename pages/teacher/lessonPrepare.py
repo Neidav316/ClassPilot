@@ -34,7 +34,7 @@ def json_to_slides(json_file):
 def set_subject_content(subjects):
     if "subject_content" in st.session_state:
         for subject in subjects["subjects"]:
-            if subject["subject_name"] == st.session_state.subject_content:
+            if subject["subject"] == st.session_state.subject_content:
                 return subject
 
 
@@ -83,8 +83,6 @@ currState = rs.slides(sample_markdown,
                       },
                       markdown_props={"data-separator-vertical": "^--$"},
                       key="foo")
-
-st.page_link("pages/student/chatBot.py", label="Ask ChatBot")
 
 
 def main():

@@ -18,10 +18,12 @@ logout_page = st.Page("pages/auth/logout_page.py", title="Log out")
 settings = st.Page("settings.py", title="Settings")
 
 ### Teacher Pages
-lesson_planner = st.Page("pages/teacher/LessonPlanner.py", title="Lesson Planner", default=(role == "Teacher"))
+lesson_planner_page = st.Page("pages/teacher/LessonPlanner.py", title="Lesson Planner", default=(role == "Teacher"))
+lesson_prepare_page = st.Page("pages/teacher/lessonPrepare.py", title="Lesson Prepare")
+teacher_lesson_requester_page = st.Page("pages/teacher/requestLessonTeacher.py", title="Lesson List - Teacher")
 
 ### Student Pages
-lesson_requester_page = st.Page("pages/student/requestLesson.py", title="Lesson Requester", default=(role == "Student"))
+student_lesson_requester_page = st.Page("pages/student/requestLesson.py", title="Lesson List", default=(role == "Student"))
 chatbot_page = st.Page("pages/student/chatBot.py", title="ChatBot Assistant")
 lesson_presenter_page = st.Page("pages/student/lessonPresenter.py", title="Lesson Presenter")
 questioner_page = st.Page("pages/student/questioner.py", title="Questioner")
@@ -30,8 +32,8 @@ admin_1 = st.Page("pages/admin/admin_1.py", title="Admin 1", default=(role == "A
 
 # Sorting the pages according to relevancy, for neet side menu in navigation
 account_pages = [settings, logout_page]
-teacher_pages = [lesson_planner]
-student_pages = [lesson_requester_page, chatbot_page, lesson_presenter_page, questioner_page]
+teacher_pages = [lesson_planner_page, lesson_prepare_page, teacher_lesson_requester_page]
+student_pages = [student_lesson_requester_page, chatbot_page, lesson_presenter_page, questioner_page]
 admin_pages = [admin_1]
 
 st.title("ClassPilot AI")
