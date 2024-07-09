@@ -22,13 +22,22 @@ if "role" not in st.session_state:
 st.header("Chatbot")
 st.write(f"You are logged in as {st.session_state.role}.")
 
+
 # Load lesson text if not already loaded
-if "text_lesson" not in st.session_state:
-    with open("utils/data/lesson_plans.json", "r", encoding='utf-8') as file:
-        content = json.load(file)["subjects"][0]
-        initial_prompt = prompts.prompt_chatbot
-        text = initial_prompt + json_to_text(content)
-        st.session_state.text_lesson = text
+if "subject_content" in st.session_state:
+    if "text_lesson" not in st.session_state:
+        with open("utils/data/lesson_content.json", "r", encoding='utf-8') as file:
+            content = json.load(file)["subjects"]
+            subject_content = None
+            for subject in content:
+                if subject["subject"] == st.session_state.subject_content:
+                    subject_content = subject
+            if subject_content is not None:
+                initial_prompt = prompts.prompt_chatbot
+                text = initial_prompt + json_to_text(subject_content)
+                st.session_state.text_lesson = text
+            else:
+                st.write("Error loading subject content to bot")
 
 # Initialize chatbot if not already initialized
 if "chatbot" not in st.session_state:

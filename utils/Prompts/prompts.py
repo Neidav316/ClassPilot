@@ -50,5 +50,5 @@ and will read the following string:
 
 prompt_chatbot = \
 """
-
+Assist teaching using the following subject content:
 """

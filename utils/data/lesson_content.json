@@ -1,0 +1,55 @@
+{
+  "subjects": [
+    {
+      "subject": "python",
+      "lessons": [
+        {
+          "title": "Introduction to Python",
+          "pages": [
+            {
+              "title": "Why Learn Python?",
+              "subtitles": [
+                "Python's Popularity",
+                "Versatility of Python",
+                "Easy to Learn"
+              ],
+              "content": "Python is one of the most popular programming languages in use today, with applications in data science, web development, automation, and more.  Its simplicity and readability make it an excellent choice for beginners and experts alike.  This page explores the reasons why learning Python is a valuable investment in your future."
+            },
+            {
+              "title": "Setting Up Your Python Environment",
+              "subtitles": [
+                "Installing Python",
+                "Choosing an IDE",
+                "Running Your First Script"
+              ],
+              "content": "Before you can start coding in Python, you need to set up your development environment.  This page covers the steps for installing Python on your computer, selecting a suitable Integrated Development Environment (IDE), and writing and executing your first Python script. ."
+            }
+          ]
+        },
+        {
+          "title": "Python Basics",
+          "pages": [
+            {
+              "title": "Variables and Data Types",
+              "subtitles": [
+                "Declaring Variables",
+                "Numeric Data Types",
+                "String Data Type"
+              ],
+              "content": "Python has several built-in data types, including integers, floating-point numbers, and strings.  This page introduces the basics of working with variables and data types in Python, including how to declare and initialize variables and perform basic arithmetic and string operations. ."
+            },
+            {
+              "title": "Control Flow",
+              "subtitles": [
+                "Conditional Statements",
+                "Loops",
+                "Exception Handling"
+              ],
+              "content": "Control flow refers to the order in which code is executed in a program.  Python provides several constructs for controlling the flow of execution, including conditional statements, loops, and exception handling.  This page covers the basics of these concepts and how to use them in your Python code."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

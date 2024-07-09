@@ -6,7 +6,7 @@ import pandas as pd
 
 
 def get_subjects(filter=None):
-    f = open("utils/data/lesson_plans.json")
+    f = open("utils/data/lesson_content.json")
     return json.load(f)
 
 

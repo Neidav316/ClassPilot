@@ -1,9 +1,13 @@
 import streamlit as st
 
+import pages.teacher.LessonCreator
+
 # Role initialize in session state and default value for role
 if "role" not in st.session_state:
     st.session_state.role = "Admin"  # default = ADMIN, upon app activation, the user will sign in automatically as ADMIN
 
+if "subject_content" not in st.session_state:
+    st.session_state.subject_content = ""
 ROLES = [None, "Teacher", "Student", "Admin"]
 
 role = st.session_state.role
@@ -18,7 +22,7 @@ logout_page = st.Page("pages/auth/logout_page.py", title="Log out")
 settings = st.Page("settings.py", title="Settings")
 
 ### Teacher Pages
-lesson_planner_page = st.Page("pages/teacher/LessonPlanner.py", title="Lesson Planner", default=(role == "Teacher"))
+lesson_planner_page = st.Page("pages/teacher/lessonCreator.py", title="Lesson Planner", default=(role == "Teacher"))
 lesson_prepare_page = st.Page("pages/teacher/lessonPrepare.py", title="Lesson Prepare")
 teacher_lesson_requester_page = st.Page("pages/teacher/requestLessonTeacher.py", title="Lesson List - Teacher")
 
@@ -58,5 +62,5 @@ else:  # if dict is empty, meaning role is None, it will navigate to log in page
 # Run the page
 pg.run()
 
-def switch_page(filePath):
-    st.switch_page(filePath)
+# def switch_page(filePath):
+#     st.switch_page(filePath)

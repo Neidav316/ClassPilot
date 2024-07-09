@@ -28,7 +28,7 @@ if "model_questioner" not in st.session_state:
 # Get lesson plan content for generating questions
 initial_prompt = prompts.prompt_questioner
 if "subject_content" in st.session_state:
-    with open("utils/data/lesson_plans.json") as f:
+    with open("utils/data/lesson_content.json") as f:
         content = json.load(f)
         for subject in content["subjects"]:
             if subject["subject"] == st.session_state.subject_content:

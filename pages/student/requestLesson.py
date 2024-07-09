@@ -6,7 +6,7 @@ import pandas as pd
 
 
 def get_finished_subjects(filter=None):
-    f_data = open("utils/data/lesson_plans.json")
+    f_data = open("utils/data/lesson_content.json")
     f_config = open("utils/data/lesson_config.json")
     data = json.load(f_data)
     config = json.load(f_config)

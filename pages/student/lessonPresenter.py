@@ -46,7 +46,7 @@ def get_subject_config():
                 return subject["config"]
 
 
-with open("utils/data/lesson_plans.json") as f:
+with open("utils/data/lesson_content.json") as f:
     content = json.load(f)
     subject = set_subject_content(content)
     sample_markdown = json_to_slides(subject)
