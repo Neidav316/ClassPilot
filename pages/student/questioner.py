@@ -1,5 +1,7 @@
 import streamlit as st
 from groq import Groq
+
+import generalFunctions as gf
 from utils.Prompts import prompts
 import json
 
@@ -12,11 +14,11 @@ st.header("Questioner")
 if st.session_state.subject_content == "":
     st.error("No lesson was chosen, please go back to main page")
     st.stop()
-with open("utils/data/secret_keys.json") as f:
-    keys = json.load(f)["Keys"]
-    for key in keys:
-        if key["Api Name"] == "ChatGroq":
-            chatGroq_key = key["Key"]
+
+keys = gf.get_data_from_path(gf.MAIN_DATA_PATH+gf.SECRET_KEYS)
+for key in keys["Keys"]:
+    if key["Api Name"] == "ChatGroq":
+        chatGroq_key = key["Key"]
 
 # Model init
 if chatGroq_key is None:
@@ -28,12 +30,11 @@ else:
 initial_prompt = prompts.prompt_questioner
 
 if "subject_content" in st.session_state:
-    with open("utils/data/lesson_content.json") as f:
-        content = json.load(f)
-        for subject in content["subjects"]:
-            if subject["subject"] == st.session_state.subject_content:
-                prompt = initial_prompt + json.dumps(subject)
-                system_prompt = {"role": "system", "content": prompt}
+    content = gf.get_data_from_path(gf.MAIN_DATA_PATH+gf.LESSON_CONTENT_PATH)
+    for subject in content["subjects"]:
+        if subject["subject"] == st.session_state.subject_content:
+            prompt = initial_prompt + json.dumps(subject)
+            system_prompt = {"role": "system", "content": prompt}
 
 
     with st.chat_message("assistant"):
@@ -44,9 +45,6 @@ if "subject_content" in st.session_state:
             stream=False
         ).choices[0].message.content
         st.write(response)
-
-
-
 
 #
 

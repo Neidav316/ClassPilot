@@ -12,20 +12,8 @@ import json
 import streamlit as st
 import reveal_slides as rs  # Import the reveal_slides module
 import sys
+import generalFunctions as gf
 
-DATA_DIR = Path(__file__).parent / "data"
-DATA_DIR.mkdir(exist_ok=True)
-
-
-def load_json(file_path):
-    if file_path.exists():
-        with open(file_path, 'r') as f:
-            return json.load(f)
-    return {}
-
-def save_json(data, file_path):
-    with open(file_path, 'w') as f:
-        json.dump(data, f, indent=2)
 
 # def get_subject_file_paths(subject):
 #     base_name = subject.lower().replace(' ', '_')
@@ -161,15 +149,14 @@ class LessonPresenter:
         # current_dir = os.path.dirname(os.path.abspath(__file__))
         # json_path = os.path.join(current_dir,'data', f'{name}_lesson_content.json')
         # json_path = os.path.normpath(json_path)
-        json_path = "utils/data/lesson_content.json"
+        json_path = gf.MAIN_DATA_PATH+gf.LESSON_CONTENT_PATH
         try:
-            with open(json_path) as f:
-                content = json.load(f)
+            content = gf.get_data_from_path(json_path)
             for i in range(len(content["subjects"])):
                 if content["subjects"][i].get("subject") == subject_content.get("subject"):
                     content["subjects"][i] = subject_content
                     break
-            save_json(content,json_path)
+            gf.save_json(content,json_path)
             st.success("Content saved successfully")
             return True
         except Exception as e:
@@ -181,10 +168,9 @@ def load_content():
     # current_dir = os.path.dirname(os.path.abspath(__file__))
     # json_path = os.path.join(current_dir, 'data', f'{name}_lesson_content.json')
     # json_path = os.path.normpath(json_path)
-    json_path = "utils/data/lesson_content.json"
+    json_path = gf.MAIN_DATA_PATH+gf.LESSON_CONTENT_PATH
     try:
-        with open(json_path, 'r') as f:
-            content = json.load(f)
+        content = gf.get_data_from_path(json_path)
         print("JSON file loaded successfully in load_content")
     except FileNotFoundError:
         print(f"Error: Could not find the file at {json_path}")
@@ -204,11 +190,9 @@ def save_config(config,subject_name):
     # current_dir = os.path.dirname(os.path.abspath(__file__))
     # config_path = os.path.join(current_dir,'data', 'slide_config.json')
     # config_path = os.path.normpath(config_path)
-    config_path = "utils/data/slide_config.json"
-    all_config_data = None
-    with open(config_path, 'r') as f:
-        all_config_data = json.load(f)
-    if all_config_data is not None:
+    config_path = gf.MAIN_DATA_PATH+gf.SLIDE_CONFIG_PATH
+    all_config_data = gf.get_data_from_path(config_path)
+    if all_config_data != {}:
         new_config = True
         for i in range(len(all_config_data["subjects"])):
             if all_config_data["subjects"][i].get("subject") == config_data.get("subject"):
@@ -218,7 +202,7 @@ def save_config(config,subject_name):
         if new_config:
             all_config_data["subjects"].append(config_data)
     
-        save_json(all_config_data,config_path)
+        gf.save_json(all_config_data,config_path)
         st.success("Config Saved")
     else:
         st.error("Config didn't saved")

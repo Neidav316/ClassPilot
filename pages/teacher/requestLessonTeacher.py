@@ -1,21 +1,17 @@
-import json
-
 import click
 import streamlit as st
 import pandas as pd
+import generalFunctions as gf
 
+data = gf.get_data_from_path(gf.MAIN_DATA_PATH+gf.SUBJECTS_PATH)
 
-def get_subjects(filter=None):
-    f = open("utils/data/lesson_content.json")
-    return json.load(f)
-
-
-data = get_subjects()
+student_data = gf.get_data_from_path(gf.MAIN_DATA_PATH+gf.STUDENT_DATA_PATH)
 
 df = pd.DataFrame({
     "Main Subject": [subject_content["subject"] for subject_content in data["subjects"]],
     "Link Lesson": ['Start Lesson' for _ in data["subjects"]],
-    "Link Bot": ["Chat with bot" for _ in data["subjects"]]
+    "Link Bot": ["Chat with bot" for _ in data["subjects"]],
+    "View Count": []
 })
 
 st.header("Lesson Requester")

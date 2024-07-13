@@ -2,6 +2,7 @@ import streamlit as st
 import reveal_slides as rs
 import json
 from utils.Prompts import prompts
+import generalFunctions as gf
 
 
 
@@ -32,9 +33,9 @@ def set_subject_content(subjects):
                 return subject
 
 def get_subject_config():
-    with open("utils/data/slide_config.json") as f:
-        subjects = json.load(f)["subjects"]
-    for subject in subjects:
+
+    subjects = gf.get_data_from_path(gf.MAIN_DATA_PATH+gf.SLIDE_CONFIG_PATH)
+    for subject in subjects["subjects"]:
         if subject["subject"] == st.session_state.subject_content:
             return subject["config"]
 
@@ -44,10 +45,10 @@ if st.session_state.subject_content == "":
     st.error("No lesson was chosen, please go back to main page")
     st.stop()
 
-with open("utils/data/lesson_content.json") as f:
-    content = json.load(f)
-    subject = set_subject_content(content)
-    sample_markdown = json_to_slides(subject)
+
+content = gf.get_data_from_path(gf.MAIN_DATA_PATH+gf.LESSON_CONTENT_PATH)
+subject = set_subject_content(content)
+sample_markdown = json_to_slides(subject)
 
 config = get_subject_config()
 currState = rs.slides(sample_markdown,
