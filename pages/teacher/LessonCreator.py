@@ -201,20 +201,38 @@ def save_config(config,subject_name):
         "subject":subject_name,
         "config": config,
     }
+
     current_dir = os.path.dirname(os.path.abspath(__file__))
     config_path = os.path.join(current_dir,'data', 'slide_config.json')
     config_path = os.path.normpath(config_path)
+    all_config_data = None
+    with open(config_path, 'r') as f:
+        all_config_data = json.load(f)
+    if all_config_data is not None:
+        new_config = True
+        for i in range(len(all_config_data["subjects"])):
+            if all_config_data["subjects"][i].get("subject") == config_data.get("subject"):
+                all_config_data["subjects"][i] = config_data
+                new_config = False
+                break
+        if new_config:
+            all_config_data["subjects"].append(config_data)
     
-    with open(config_path, 'w') as f:
-        json.dump(config_data, f, indent=2)
+        with open(config_path, 'w') as f:
+            json.dump(all_config_data, f, indent=2)
+        st.success("Config Saved")
+    else:
+        st.error("Config didn't saved")
 
 def create_editor_screen(presenter: LessonPresenter):
     st.title("Lesson Presentation System")
     subjects = [s["subject"] for s in presenter.content["subjects"]]
     selected_subject = st.sidebar.selectbox("Select Subject", subjects)
     presenter.set_subject_content(selected_subject)
-    if selected_subject:
-        presenter.set_subject_content(selected_subject)
+
+    # if selected_subject:
+    #     presenter.set_subject_content(selected_subject)
+
 
     with st.expander("Edit Page Content", expanded=False):
         lessons = [l["title"] for l in presenter.subject.get("lessons", [])]
@@ -250,6 +268,9 @@ def create_editor_screen(presenter: LessonPresenter):
         save_config(config,presenter.subject.get("subject",""))
         presenter.save_content(presenter.subject)
         st.sidebar.success("Configuration saved successfully!")
+        st.rerun()
+    if st.button("Return to Main Page"):
+        st.session_state.current_page = "home"
         st.rerun()
 
     slides_component = presenter.create_slide_component(presenter.json_to_slides(), config, initial_state={})
@@ -375,15 +396,17 @@ class ContentEditor:
         return summarized_content['text']
 
 class App:
-    def __init__(self, api_key,isTeacher=True):
+    def __init__(self):
+
+        api_key = get_key()
         self.generator = LessonContentGenerator(api_key)
         self.editor = ContentEditor(ChatGroq(api_key=api_key))
         self.lessonPresentor = None
-    def run(self,isTeacher=True):
+    def run(self):
         # st.set_page_config(layout="wide")
         
-        if 'current_page' not in st.session_state:
-            st.session_state.current_page = "home"
+        # if 'current_page' not in st.session_state:
+        #     st.session_state.current_page = "home"
         
         if st.session_state.current_page == "home":
             self._show_home_page()
@@ -578,13 +601,19 @@ if __name__ == "__main__":
     api_key = ""
     
     #debug
-    app = App(api_key,True)
+    app = App()
+    app.run()
+def get_key():
+    with open("utils/data/secret_keys.json") as key_file:
+        keys = json.load(key_file)
+        for key in keys["Keys"]:
+            if key["Api Name"] == "ChatGroq":
+                return  key["Key"]
+
+
+app = App()
+if st.session_state.role == "Teacher":
     app.run()
 
-api_key = ""
-with open("utils/data/secret_keys.json") as key_file:
-    keys = json.load(key_file)
-    for key in keys["Keys"]:
-        if key["Api Name"] == "ChatGroq":
-            api_key = key["Key"]
-App(api_key,True).run()
+# def run():
+#     app.run()

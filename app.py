@@ -1,21 +1,17 @@
 import streamlit as st
 
-import pages.teacher.LessonCreator
+from init_streamlit import init
 
+
+init()
 # Role initialize in session state and default value for role
-if "role" not in st.session_state:
-    st.session_state.role = "Admin"  # default = ADMIN, upon app activation, the user will sign in automatically as ADMIN
-
-if "subject_content" not in st.session_state:
-    st.session_state.subject_content = ""
-ROLES = [None, "Teacher", "Student", "Admin"]
+# if "role" not in st.session_state:
+#     st.session_state.role = None  # default = None, upon app activation, the user will sign in automatically as None
+#
+# if "subject_content" not in st.session_state:
+#     st.session_state.subject_content = ""
 
 role = st.session_state.role
-
-# Page Configuration
-
-st.set_page_config(page_title="ClassPilot AI", page_icon=":rocket:", layout="wide")
-st.sidebar.title("ClassPilot AI")
 
 # Logout and Settings pages
 logout_page = st.Page("pages/auth/logout_page.py", title="Log out")
@@ -39,10 +35,6 @@ account_pages = [settings, logout_page]
 teacher_pages = [lesson_planner_page, lesson_prepare_page, teacher_lesson_requester_page]
 student_pages = [student_lesson_requester_page, chatbot_page, lesson_presenter_page, questioner_page]
 admin_pages = [admin_1]
-
-st.title("ClassPilot AI")
-
-st.logo("images/app_Logo.jpg", icon_image="images/app_Logo.jpg")
 
 # init the dict for the side menu display
 page_dict = {}
