@@ -3,11 +3,6 @@ import reveal_slides as rs
 import json
 from utils.Prompts import prompts
 
-if "subject_content" not in st.session_state:
-    st.session_state.subject_content = "Python"
-
-st.header("Lesson Presenter")
-st.write(f"You are logged in as {st.session_state.role}.")
 
 
 # NOTES FOR Reveal_Slides syntex
@@ -30,8 +25,6 @@ def json_to_slides(json_file):
 
     return sample_text
 
-
-
 def set_subject_content(subjects):
     if "subject_content" in st.session_state:
         for subject in subjects["subjects"]:
@@ -39,12 +32,17 @@ def set_subject_content(subjects):
                 return subject
 
 def get_subject_config():
-    with open("utils/data/lesson_config.json") as f:
+    with open("utils/data/slide_config.json") as f:
         subjects = json.load(f)["subjects"]
-        for subject in subjects:
-            if subject["subject"] == st.session_state.subject_content:
-                return subject["config"]
+    for subject in subjects:
+        if subject["subject"] == st.session_state.subject_content:
+            return subject["config"]
 
+
+st.header("Lesson Presenter")
+if st.session_state.subject_content == "":
+    st.error("No lesson was chosen, please go back to main page")
+    st.stop()
 
 with open("utils/data/lesson_content.json") as f:
     content = json.load(f)
@@ -52,18 +50,12 @@ with open("utils/data/lesson_content.json") as f:
     sample_markdown = json_to_slides(subject)
 
 config = get_subject_config()
-
 currState = rs.slides(sample_markdown,
-                      height=config.height,
-                      theme=config.theme,  # color and font style of text
+                      height=config["height"],
+                      theme=config["theme"],  # color and font style of text
                       config={
-                          "width": config.content_width,
-                          "height": config.content_height,
-                          "minScale": config.scale_range[0],
-                          "center": True,
-                          "maxScale": config.scale_range[1],
-                          "margin": config.margin,
-                          "plugins": config.plugins
+                          # add the css cutsom font size
+                          "center": True
                       },
                       markdown_props={"data-separator-vertical": "^--$"},
                       key="foo")

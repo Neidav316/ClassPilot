@@ -11,6 +11,9 @@ def init():
 
     if 'current_page' not in st.session_state:
         st.session_state.current_page = "home"
+
+    if "model_questioner" not in st.session_state:
+        st.session_state["model_questioner"] = "llama3-70b-8192"
     # Page Configuration
 
     st.set_page_config(page_title="ClassPilot AI", page_icon=":rocket:", layout="wide")

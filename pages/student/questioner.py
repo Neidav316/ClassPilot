@@ -3,15 +3,20 @@ from groq import Groq
 from utils.Prompts import prompts
 import json
 
+st.header("Questioner")
+
+
+# Need to extract data from database
+# Get system prompt for model to generate questions
+# Get lesson plan content for generating questions
+if st.session_state.subject_content == "":
+    st.error("No lesson was chosen, please go back to main page")
+    st.stop()
 with open("utils/data/secret_keys.json") as f:
     keys = json.load(f)["Keys"]
     for key in keys:
         if key["Api Name"] == "ChatGroq":
             chatGroq_key = key["Key"]
-
-st.header("Questioner")
-st.write(f"You are logged in as {st.session_state.role}.")
-
 
 # Model init
 if chatGroq_key is None:
@@ -20,13 +25,8 @@ if chatGroq_key is None:
 else:
     client_questioner = Groq(api_key=chatGroq_key)
 
-if "model_questioner" not in st.session_state:
-    st.session_state["model_questioner"] = "llama3-70b-8192"
-
-# Need to extract data from database
-# Get system prompt for model to generate questions
-# Get lesson plan content for generating questions
 initial_prompt = prompts.prompt_questioner
+
 if "subject_content" in st.session_state:
     with open("utils/data/lesson_content.json") as f:
         content = json.load(f)

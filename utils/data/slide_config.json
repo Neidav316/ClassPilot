@@ -1,3 +1,14 @@
 {
-  "subjects": []
+  "subjects": [
+    {
+      "subject": "python",
+      "config": {
+        "base_font_size": 24,
+        "heading_scale": 1.5,
+        "theme": "black",
+        "height": 600,
+        "scrollable": true
+      }
+    }
+  ]
 }

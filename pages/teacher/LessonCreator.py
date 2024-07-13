@@ -161,20 +161,19 @@ class LessonPresenter:
         # current_dir = os.path.dirname(os.path.abspath(__file__))
         # json_path = os.path.join(current_dir,'data', f'{name}_lesson_content.json')
         # json_path = os.path.normpath(json_path)
-        json_path = "utils/data/lesson_plan.py"
+        json_path = "utils/data/lesson_content.json"
         try:
             with open(json_path) as f:
                 content = json.load(f)
-                for i in range(len(content["subjects"])):
-                    if content["subjects"][i].get("subject") == subject_content.get("subject"):
-                        content["subjects"][i] = subject_content
-                        break
-
-                json.dump(self.content, f, indent=2)
-                print("Content saved successfully")
-                return True
+            for i in range(len(content["subjects"])):
+                if content["subjects"][i].get("subject") == subject_content.get("subject"):
+                    content["subjects"][i] = subject_content
+                    break
+            save_json(content,json_path)
+            st.success("Content saved successfully")
+            return True
         except Exception as e:
-            print(f"Error saving content: {str(e)}")
+            st.error(f"Error saving content: {str(e)}")
             return False
 
 
@@ -186,7 +185,7 @@ def load_content():
     try:
         with open(json_path, 'r') as f:
             content = json.load(f)
-        print("JSON file loaded successfully")
+        print("JSON file loaded successfully in load_content")
     except FileNotFoundError:
         print(f"Error: Could not find the file at {json_path}")
         content = {"subjects": []}
@@ -202,9 +201,10 @@ def save_config(config,subject_name):
         "config": config,
     }
 
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    config_path = os.path.join(current_dir,'data', 'slide_config.json')
-    config_path = os.path.normpath(config_path)
+    # current_dir = os.path.dirname(os.path.abspath(__file__))
+    # config_path = os.path.join(current_dir,'data', 'slide_config.json')
+    # config_path = os.path.normpath(config_path)
+    config_path = "utils/data/slide_config.json"
     all_config_data = None
     with open(config_path, 'r') as f:
         all_config_data = json.load(f)
@@ -218,8 +218,7 @@ def save_config(config,subject_name):
         if new_config:
             all_config_data["subjects"].append(config_data)
     
-        with open(config_path, 'w') as f:
-            json.dump(all_config_data, f, indent=2)
+        save_json(all_config_data,config_path)
         st.success("Config Saved")
     else:
         st.error("Config didn't saved")
@@ -612,7 +611,7 @@ def get_key():
 
 
 app = App()
-if st.session_state.role == "Teacher":
+if st.session_state.role in ["Teacher","Admin"]:
     app.run()
 
 # def run():

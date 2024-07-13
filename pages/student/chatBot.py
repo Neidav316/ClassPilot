@@ -20,8 +20,9 @@ if "role" not in st.session_state:
     st.session_state.role = "Student"  # default role is Student
 
 st.header("Chatbot")
-st.write(f"You are logged in as {st.session_state.role}.")
-
+if st.session_state.subject_content == "":
+    st.error("No lesson was chosen, please go back to main page")
+    st.stop()
 
 # Load lesson text if not already loaded
 if "subject_content" in st.session_state:
