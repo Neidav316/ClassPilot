@@ -9,5 +9,4 @@ panda
 numpy
 pptx
 gtts
-pydub
-simpleaudio
+pygame
