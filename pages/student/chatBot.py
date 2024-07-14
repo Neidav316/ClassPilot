@@ -1,6 +1,7 @@
 import streamlit as st
 import json
 from utils.Prompts  import prompts
+from utils.TextToVoice.TextToVoice import TextToVoice
 
 from pages.student.chatbot.ChatBot import ChatBot
 
@@ -49,12 +50,15 @@ if "chatbot" not in st.session_state:
 if "messages_chat" not in st.session_state:
     st.session_state.messages_chat = []
 
+ttsModel = TextToVoice()
+
 for message in st.session_state.messages_chat:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
 # Get user input
 prompt = st.chat_input("Say something")
+ttsModel.play("Say something")
 if prompt:
     st.session_state.messages_chat.append({"role": "user", "content": prompt})
 
@@ -70,6 +74,7 @@ if prompt:
 
     # Append assistant's response to messages_chat
     st.session_state.messages_chat.append({"role": "assistant", "content": response})
+    ttsModel.play(text=response)
 
 if __name__ == "__main__":
     # main()

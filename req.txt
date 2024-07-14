@@ -5,3 +5,9 @@ langchain_groq
 langchain
 ollama
 langchain_community
+panda
+numpy
+pptx
+gtts
+pydub
+simpleaudio
