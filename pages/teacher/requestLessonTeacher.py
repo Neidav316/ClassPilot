@@ -11,7 +11,7 @@ df = pd.DataFrame({
     "Main Subject": [subject_content["subject"] for subject_content in data["subjects"]],
     "Link Lesson": ['Start Lesson' for _ in data["subjects"]],
     "Link Bot": ["Chat with bot" for _ in data["subjects"]],
-    "View Count": []
+    # "View Count": []
 })
 
 st.header("Lesson Requester")

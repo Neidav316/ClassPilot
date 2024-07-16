@@ -45,12 +45,54 @@ if st.session_state.subject_content == "":
     st.error("No lesson was chosen, please go back to main page")
     st.stop()
 
+def generate_custom_css(base_font_size: int, heading_scale: float) -> str:
+        return f"""
+        <style>
+        .reveal .slides section {{
+            height: 100%;
+            overflow-y: auto !important;
+            overflow-x: hidden !important;
+        }}
+        .reveal {{
+            height: 100% !important;
+            font-size: {base_font_size}px !important;
+        }}
+        .reveal .slides {{
+            height: 100% !important;
+        }}
+        .reveal h1 {{ font-size: {base_font_size * heading_scale}px !important; }}
+        .reveal h2 {{ font-size: {base_font_size * (heading_scale * 0.9)}px !important; }}
+        .reveal h3 {{ font-size: {base_font_size * (heading_scale * 0.8)}px !important; }}
+        .reveal p, .reveal li {{ font-size: {base_font_size}px !important; }}
+        .reveal .slides section {{ color: #f0f0f0 !important; }}
+        .reveal pre {{
+            box-shadow: none !important;
+            background-color: rgba(0,0,0,0.3) !important;
+            margin: 15px 0 !important;
+            padding: 10px !important;
+            border-radius: 5px !important;
+        }}
+        .reveal pre code {{
+            max-height: 400px !important;
+            font-size: {base_font_size * 0.7}px !important;
+            line-height: 1.3em !important;
+            padding: 0 !important;
+        }}
+        .hljs {{ background: transparent !important; }}
+        .reveal.white pre, .reveal.beige pre {{ background-color: rgba(0,0,0,0.05) !important; }}
+        .reveal.white pre code, .reveal.beige pre code {{ color: #333 !important; }}
+        .reveal.black pre, .reveal.league pre, .reveal.night pre {{ background-color: rgba(255,255,255,0.1) !important; }}
+        .reveal.black pre code, .reveal.league pre code, .reveal.night pre code {{ color: #f0f0f0 !important; }}
+        </style>
+        """
 
 content = gf.get_data_from_path(gf.MAIN_DATA_PATH+gf.LESSON_CONTENT_PATH)
 subject = set_subject_content(content)
 sample_markdown = json_to_slides(subject)
 
+
 config = get_subject_config()
+sample_markdown = generate_custom_css(config.get("base_font_size",24),config.get("heading_scale",1.5)) + sample_markdown
 currState = rs.slides(sample_markdown,
                       height=config["height"],
                       theme=config["theme"],  # color and font style of text

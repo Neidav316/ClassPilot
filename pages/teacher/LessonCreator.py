@@ -407,22 +407,21 @@ class App:
         # Display saved lesson contents
         with open("utils/data/lesson_content.json",'r') as f:
             saved_subjects = json.load(f)["subjects"]
-        for subject in saved_subjects:
-            if st.button(f"Edit {subject['subject']}"):
-                st.session_state.json_content = subject
-                st.session_state.content_generated = True
-                st.session_state.current_page = "editor"
-                st.rerun()
-        # saved_files = Path('.').glob('*_lesson_content.json')
-        #
-        # for file in saved_files:
-        #     if st.button(f"Edit {file.stem}"):
-        #         with open(file, 'r') as f:
-        #             st.session_state.json_content = json.load(f)
-        #         st.session_state.content_generated = True
-        #         st.session_state.current_page = "editor"
-        #         st.rerun()
-
+        col1, col2 = st.columns([1,3])
+        with col1:
+            for i in range(0,len(saved_subjects),2): #subject in saved_subjects:
+                if st.button(f"Edit {saved_subjects[i]['subject']}"):
+                    st.session_state.json_content = saved_subjects[i]
+                    st.session_state.content_generated = True
+                    st.session_state.current_page = "editor"
+                    st.rerun()
+        with col2:
+            for i in range(1,len(saved_subjects),2): #subject in saved_subjects:
+                if st.button(f"Edit {saved_subjects[i]['subject']}"):
+                    st.session_state.json_content = saved_subjects[i]
+                    st.session_state.content_generated = True
+                    st.session_state.current_page = "editor"
+                    st.rerun()
     def _show_editor_page(self):
         st.markdown("""
         <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -444,7 +443,9 @@ class App:
 
     def _show_restart_button(self):
         if st.button("Restart and select a new subject"):
+            temp_role = st.session_state.role
             st.session_state.clear()
+            st.session_state.role = temp_role
             st.rerun()
 
     def _handle_content_generation(self):
@@ -508,7 +509,7 @@ class App:
                 st.rerun()
 
     def _select_lesson_and_page(self):
-        col1, col2 = st.columns(2)
+        col1, col2 = st.columns([1,4])
         with col1:
             lesson_titles = [lesson.get("title", f"Lesson {i+1}") for i, lesson in enumerate(st.session_state.json_content["lessons"])]
             lesson_title = st.selectbox("📚 Select a lesson", lesson_titles)
