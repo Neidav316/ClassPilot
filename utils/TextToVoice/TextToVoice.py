@@ -30,7 +30,8 @@ class TextToVoice:
             name = 'output'
         self.audio_file = DIR_PATH + f"\\{name}.mp3"
         tts.save(self.audio_file)
-
+    def is_playing(self) -> bool:
+        return self.play_obj.is_playing()
     def play(self, text, lang='en'):
         self.generate_speech(text, lang=lang)
         if self.play_obj.is_playing():

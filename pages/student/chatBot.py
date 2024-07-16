@@ -68,6 +68,8 @@ if not st.session_state.chat_finished:
     prompt = st.chat_input("Say something")
     ttsModel.play("Say something")
     if prompt:
+        if ttsModel.is_playing():
+            ttsModel.stop()
         st.session_state.messages_chat.append({"role": "user", "content": prompt})
 
         # Display user message in chat message container
