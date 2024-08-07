@@ -137,12 +137,6 @@ class LessonPresenter:
         """
     def save_content(self,subject_content):
 
-        # path =   DATA_DIR / f"{name}_lesson_content.json"
-        # save_json(self.content,path)
-        #
-        # current_dir = os.path.dirname(os.path.abspath(__file__))
-        # json_path = os.path.join(current_dir,'data', f'{name}_lesson_content.json')
-        # json_path = os.path.normpath(json_path)
         json_path = gf.MAIN_DATA_PATH+gf.LESSON_CONTENT_PATH
         try:
             content = gf.get_data_from_path(json_path)
@@ -159,9 +153,7 @@ class LessonPresenter:
 
 
 def load_content():
-    # current_dir = os.path.dirname(os.path.abspath(__file__))
-    # json_path = os.path.join(current_dir, 'data', f'{name}_lesson_content.json')
-    # json_path = os.path.normpath(json_path)
+
     json_path = gf.MAIN_DATA_PATH+gf.LESSON_CONTENT_PATH
     try:
         content = gf.get_data_from_path(json_path)
@@ -181,9 +173,6 @@ def save_config(config,subject_name):
         "config": config,
     }
 
-    # current_dir = os.path.dirname(os.path.abspath(__file__))
-    # config_path = os.path.join(current_dir,'data', 'slide_config.json')
-    # config_path = os.path.normpath(config_path)
     config_path = gf.MAIN_DATA_PATH+gf.SLIDE_CONFIG_PATH
     all_config_data = gf.get_data_from_path(config_path)
     if all_config_data != {}:
@@ -407,21 +396,23 @@ class App:
         # Display saved lesson contents
         with open("utils/data/lesson_content.json",'r') as f:
             saved_subjects = json.load(f)["subjects"]
-        col1, col2 = st.columns([1,3])
+
+        col1, col2 = st.columns([2,5])
         with col1:
-            for i in range(0,len(saved_subjects),2): #subject in saved_subjects:
-                if st.button(f"Edit {saved_subjects[i]['subject']}"):
-                    st.session_state.json_content = saved_subjects[i]
+            for subject in saved_subjects: #subject in saved_subjects:
+                if st.button(f"Edit {subject['subject'].capitalize()}",key=subject["subject"]+"edit"):
+                    st.session_state.json_content = subject
                     st.session_state.content_generated = True
                     st.session_state.current_page = "editor"
                     st.rerun()
         with col2:
-            for i in range(1,len(saved_subjects),2): #subject in saved_subjects:
-                if st.button(f"Edit {saved_subjects[i]['subject']}"):
-                    st.session_state.json_content = saved_subjects[i]
-                    st.session_state.content_generated = True
-                    st.session_state.current_page = "editor"
-                    st.rerun()
+            for subject in saved_subjects: #subject in saved_subjects:
+                if gf.check_subject_ready(subject):
+                    if st.button(f"Present Lesson {subject['subject']}",key=subject["subject"]):
+                        st.session_state.subject_content = subject["subject"]
+                        st.switch_page("pages/teacher/TeacherLessonPresenter.py")
+                else:
+                    st.write("###")
     def _show_editor_page(self):
         st.markdown("""
         <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -457,20 +448,25 @@ class App:
         with col2:
             subtitles_per_page = st.number_input("Subtitles per page:", min_value=1, value=3, step=1)
             sentences_per_page = st.number_input("Sentences per page:", min_value=1, value=3, step=1)
-
-        if subject and subject != st.session_state.json_content.get("subject", ""):
-            if st.button("Generate Content"):
-                with st.spinner("Generating lesson content..."):
-                    try:
-                        generated_content = self.generator.generate_content(
-                            subject, num_lessons, pages_per_lesson, subtitles_per_page, sentences_per_page
-                        )
-                        st.session_state.json_content = json.loads(generated_content)
-                        st.session_state.content_generated = True
-                        st.success("Lesson content generated successfully!")
-                        st.rerun()
-                    except Exception as e:
-                        st.error(f"An error occurred: {str(e)}. Please try again.")
+        col11, col12 = st.columns([1,5])
+        with col11:
+            if st.button("Back to Home Page"):
+                st.session_state.current_page = "home"
+                st.rerun()
+        with col12:
+            if subject and subject != st.session_state.json_content.get("subject", ""):
+                if st.button("Generate Content"):
+                    with st.spinner("Generating lesson content..."):
+                        try:
+                            generated_content = self.generator.generate_content(
+                                subject, num_lessons, pages_per_lesson, subtitles_per_page, sentences_per_page
+                            )
+                            st.session_state.json_content = json.loads(generated_content)
+                            st.session_state.content_generated = True
+                            st.success("Lesson content generated successfully!")
+                            st.rerun()
+                        except Exception as e:
+                            st.error(f"An error occurred: {str(e)}. Please try again.")
 
     def _handle_content_editing(self):
         if not st.session_state.json_content.get("lessons"):

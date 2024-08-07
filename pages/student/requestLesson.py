@@ -3,24 +3,12 @@ import json
 import click
 import streamlit as st
 import pandas as pd
+import generalFunctions as gf
 
 
-def get_finished_subjects(filter=None):
-    f_data = open("utils/data/lesson_content.json")
-    f_config = open("utils/data/slide_config.json")
-    lesson_data = json.load(f_data)
-    config = json.load(f_config)
-    ready_subjects = {"subjects":[]}
-    for subject in lesson_data["subjects"]:
-        for config_subject in config["subjects"]:
-            if subject["subject"] == config_subject["subject"]:
-                ready_subjects["subjects"].append(subject)
-                break
-
-    return ready_subjects
 
 
-data = get_finished_subjects()
+data = gf.get_finished_subjects()
 # st.write(data)
 df = pd.DataFrame({
     "Main Subject": [subject_content["subject"] for subject_content in data["subjects"]],

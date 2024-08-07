@@ -1,7 +1,6 @@
 from gtts import gTTS
 import os
 import pygame
-import numpy as np
 
 DIR_PATH = os.path.abspath(os.path.curdir)
 
