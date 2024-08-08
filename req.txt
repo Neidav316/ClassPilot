@@ -1,5 +1,6 @@
 PyPDF2
 streamlit
+streamlit-reveal-slides
 groq
 langchain_groq
 langchain
