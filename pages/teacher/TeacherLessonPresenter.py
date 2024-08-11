@@ -63,14 +63,26 @@ def generate_custom_css(base_font_size: int, heading_scale: float) -> str:
         .reveal h1 {{ font-size: {base_font_size * heading_scale}px !important; }}
         .reveal h2 {{ font-size: {base_font_size * (heading_scale * 0.9)}px !important; }}
         .reveal h3 {{ font-size: {base_font_size * (heading_scale * 0.8)}px !important; }}
-        .reveal p, .reveal li {{ font-size: {base_font_size}px !important; }}
+        .reveal p, .reveal li {{
+            font-size: {base_font_size}px !important; 
+            color: #000;
+        }}
         .reveal .slides section {{ color: #f0f0f0 !important; }}
         .reveal pre {{
-            box-shadow: none !important;
-            background-color: rgba(0,0,0,0.3) !important;
-            margin: 15px 0 !important;
-            padding: 10px !important;
-            border-radius: 5px !important;
+            background: #f4f4f4;
+            border: 1px solid #ddd;
+            border-left: 3px solid #f36d33;
+            color: #666;
+            page-break-inside: avoid;
+            font-family: monospace;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 1.6em;
+            max-width: 100%;
+            overflow: auto;
+            padding: 1em 1.5em;
+            display: block;
+            word-wrap: break-word;
         }}
         .reveal pre code {{
             max-height: 400px !important;
@@ -78,7 +90,6 @@ def generate_custom_css(base_font_size: int, heading_scale: float) -> str:
             line-height: 1.3em !important;
             padding: 0 !important;
         }}
-        .hljs {{ background: transparent !important; }}
         .reveal.white pre, .reveal.beige pre {{ background-color: rgba(0,0,0,0.05) !important; }}
         .reveal.white pre code, .reveal.beige pre code {{ color: #333 !important; }}
         .reveal.black pre, .reveal.league pre, .reveal.night pre {{ background-color: rgba(255,255,255,0.1) !important; }}

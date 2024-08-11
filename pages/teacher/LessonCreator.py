@@ -24,7 +24,6 @@ class SlideComponent:
     def render(self):
         return rs.slides(
             self.content,
-            # height=self.config.get('height', 600),
             height=self.config.get('height', '100%'),
             theme=self.config.get('theme', 'black'),
             config=self.config,
@@ -36,19 +35,21 @@ class SlideComponent:
 
 class LessonPresenter:
     def __init__(self, content: dict):
+        self.subject = st.session_state.json_content
         self.content = content
-        self.set_subject_content(None)
         self.callback_func = None  # Callback function placeholder
 
     def set_subject_content(self, subject: str):
         if subject is None:
             self.subject = {"subject": "Unknown", "lessons": []}
             return
-
+        if subject.lower() == self.subject.get("subject","").lower():
+            return
         for s in self.content.get("subjects", []):
             if s.get("subject", "").lower() == subject.lower():
-                self.subject = s
-                return
+                st.session_state.json_content = s
+                st.rerun()
+
         print(f"Warning: Subject '{subject}' not found in JSON data")
         self.subject = {"subject": "Unknown", "lessons": []}
 
@@ -114,10 +115,22 @@ class LessonPresenter:
         .reveal h2 {{ font-size: {base_font_size * (heading_scale * 0.9)}px !important; }}
         .reveal h3 {{ font-size: {base_font_size * (heading_scale * 0.8)}px !important; }}
         .reveal p, .reveal li {{ font-size: {base_font_size}px !important; }}
-        .reveal .slides section {{ color: #f0f0f0 !important; }}
+
         .reveal pre {{
-            box-shadow: none !important;
-            background-color: rgba(0,0,0,0.3) !important;
+            background: #050505;
+            border: 1px solid #ddd;
+            border-left: 3px solid #f36d33;
+            color: #999;
+            page-break-inside: avoid;
+            font-family: monospace;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 1.6em;
+            max-width: 100%;
+            overflow: auto;
+            padding: 1em 1.5em;
+            display: block;
+            word-wrap: break-word;
             margin: 15px 0 !important;
             padding: 10px !important;
             border-radius: 5px !important;
@@ -193,13 +206,11 @@ def save_config(config,subject_name):
 def create_editor_screen(presenter: LessonPresenter):
     st.title("Lesson Presentation System")
     subjects = [s["subject"] for s in presenter.content["subjects"]]
-    selected_subject = st.sidebar.selectbox("Select Subject", subjects)
-    presenter.set_subject_content(selected_subject)
-
-    # if selected_subject:
-    #     presenter.set_subject_content(selected_subject)
-
-
+    selected_subject = st.sidebar.selectbox("Select Subject", subjects,None)
+    if selected_subject:
+        presenter.set_subject_content(selected_subject)
+    else:
+        presenter.set_subject_content(st.session_state.json_content.get("subject",""))
     with st.expander("Edit Page Content", expanded=False):
         lessons = [l["title"] for l in presenter.subject.get("lessons", [])]
         selected_lesson = st.selectbox("Select Lesson", lessons)
@@ -369,15 +380,11 @@ class App:
         self.editor = ContentEditor(ChatGroq(api_key=api_key))
         self.lessonPresentor = None
     def run(self):
-        # st.set_page_config(layout="wide")
-        
-        # if 'current_page' not in st.session_state:
-        #     st.session_state.current_page = "home"
         
         if st.session_state.current_page == "home":
             self._show_home_page()
         elif st.session_state.current_page == "edit":
-            content = load_content()
+            content = load_content() # need to reload content after making new content
             self.lessonPresentor = LessonPresenter(content)
             create_editor_screen(self.lessonPresentor)
         else:
