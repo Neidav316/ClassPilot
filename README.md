@@ -1,3 +1,10 @@
+## Installation
+
+Before running the project, make sure to install the required dependencies by running:
+
+```bash
+pip install -r requirements.txt
+```
 
 
 # Notes:
