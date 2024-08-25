@@ -6,6 +6,12 @@ Before running the project, make sure to install the required dependencies by ru
 pip install -r requirements.txt
 ```
 
+After that, run this to start the project:
+
+```bash
+streamlit run app.py
+```
+
 
 # Notes:
 ## TextToVoice:
